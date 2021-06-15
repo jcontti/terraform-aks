@@ -11,7 +11,7 @@ resource "azurerm_kubernetes_cluster" "aks-getting-started" {
   kubernetes_version    =  var.kubernetes_version
   
   default_node_pool {
-    name       = "default"
+    name       = "defaultname"
     node_count = 1
     vm_size    = "Standard_DS2_v2"
     type       = "VirtualMachineScaleSets"

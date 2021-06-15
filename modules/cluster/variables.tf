@@ -9,7 +9,7 @@ variable "location" {
 }
 
 variable "kubernetes_version" {
-    default = "1.19.3"
+    default = "1.19.11"
 }
 
 variable "ssh_key" {
