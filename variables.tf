@@ -20,7 +20,6 @@ variable "tenant_id" {
 variable "subscription_id" {
 }
 
-
 variable "ssh_key" {
 }
 
@@ -29,5 +28,5 @@ variable "location" {
 }
 
 variable "kubernetes_version" {
-    default = "1.19.11"
+  default = "1.19.11"
 }

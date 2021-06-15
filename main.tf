@@ -27,3 +27,23 @@ module "cluster" {
   kubernetes_version    = var.kubernetes_version  
   
 }
+
+/* # Data source to reference Azure Key Vault holding secrets
+data "azurerm_key_vault" "kv" {
+  name                = "terraform-aks-kv"
+  resource_group_name = "terraform-aks-rg"
+}
+
+# Data Source to get username secret from Azure Key Vault previously defined
+data "azurerm_key_vault_secret" "vm_username" {
+  name         = "vm-username-default"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+# How to access to the secret value:
+#   admin_username      = data.azurerm_key_vault_secret.vm_username.value
+
+output "secret_value" {
+  value = "${data.azurerm_key_vault_secret.vm_username.value}"
+  sensitive = true
+} */
