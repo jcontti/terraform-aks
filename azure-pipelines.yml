@@ -35,24 +35,6 @@ steps:
     allowTelemetryCollection: false
   displayName: 'Terraform INIT'
 
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Azure-FreeTier-Jcontti'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-            $SERVICE_PRINCIPAL=$(az keyvault secret show --name service-principal-kv --vault-name terraform-aks-kv --query value -o tsv)
-            
-            $SERVICE_PRINCIPAL_SECRET=$(az keyvault secret show --name service-principal-secret-kv --vault-name terraform-aks-kv --query value -o tsv)
-            
-            $SUBSCRIPTION=$(az keyvault secret show --name free-subscription-kv --vault-name terraform-aks-kv --query value -o tsv)
-            
-            $TENTANT_ID=$(az keyvault secret show --name free-tentant-kv --vault-name terraform-aks-kv --query value -o tsv)
-            
-            $SSH_KEY=$(az keyvault secret show --name ssh-key-kv --vault-name terraform-aks-kv --query value -o tsv)
-        
-            echo $SUBSCRIPTION
-
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'Azure-FreeTier-Jcontti'
@@ -62,8 +44,9 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'echo $(free-tentant-kv) > secret.txt'
-
+    script: |
+      echo $(service-principal-secret-kv) > sp-secret.txt
+      echo $(service-principal-kv) > sp.txt
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
