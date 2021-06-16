@@ -38,9 +38,8 @@ steps:
       dir
       cd scripts
       dir
-      create-vars-from-kv-sec.sh
+      export SUBSCRIPTION=$(az keyvault secret show --name free-subscription-kv --vault-name terraform-aks-kv --query value -o tsv)
       echo $SUBSCRIPTION
-      echo %SUBSCRIPTION%
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: TerraformCLI@0
