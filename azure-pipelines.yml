@@ -30,4 +30,15 @@ steps:
 - task: TerraformCLI@0
   inputs:
     command: 'init'
-    allowTelemetryCollection: true
+    allowTelemetryCollection: false
+
+- task: Bash@3
+  inputs:
+    filePath: 'scripts\create-vars-from-kv-sec.sh'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+- task: TerraformCLI@0
+  inputs:
+    command: 'plan'
+    commandOptions: '-var serviceprinciple_id=$SERVICE_PRINCIPAL \     -var serviceprinciple_key="$SERVICE_PRINCIPAL_SECRET" \     -var tenant_id=$TENTANT_ID \     -var subscription_id=$SUBSCRIPTION \     -var ssh_key="$SSH_KEY"'
+    allowTelemetryCollection: false
