@@ -38,6 +38,7 @@ steps:
       dir
       cd scripts
       dir
+      create-vars-from-kv-sec.sh
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: TerraformCLI@0
