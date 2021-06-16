@@ -6,8 +6,10 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+pool: 
+   name: default
+   demands:
+    - agent.name -equals LAPTOP-5LDNLO73
 
 steps:
 - script: echo Hello, world!
