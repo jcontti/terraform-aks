@@ -26,11 +26,14 @@ steps:
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: 'az account list -o table'
+  displayName: 'Azure Subscription list'
+
 
 - task: TerraformCLI@0
   inputs:
     command: 'init'
     allowTelemetryCollection: false
+  displayName: 'Terraform INIT'
 
 - task: PowerShell@2
   inputs:
@@ -38,8 +41,8 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      Write-Host "Hello World"
-      
+      az login
+
       $SERVICE_PRINCIPAL=$(az keyvault secret show --name service-principal-kv --vault-name terraform-aks-kv --query value -o tsv)
       
       $SERVICE_PRINCIPAL_SECRET=$(az keyvault secret show --name service-principal-secret-kv --vault-name terraform-aks-kv --query value -o tsv)
@@ -49,8 +52,7 @@ steps:
       $TENTANT_ID=$(az keyvault secret show --name free-tentant-kv --vault-name terraform-aks-kv --query value -o tsv)
       
       $SSH_KEY=$(az keyvault secret show --name ssh-key-kv --vault-name terraform-aks-kv --query value -o tsv)
-      
-      
+  
       echo $SUBSCRIPTION
 
 - task: TerraformCLI@0
