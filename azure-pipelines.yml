@@ -32,15 +32,26 @@ steps:
     command: 'init'
     allowTelemetryCollection: false
 
-- task: CmdLine@2
+- task: PowerShell@2
   inputs:
+    targetType: 'inline'
     script: |
-      dir
-      cd scripts
-      dir
-      export SUBSCRIPTION=$(az keyvault secret show --name free-subscription-kv --vault-name terraform-aks-kv --query value -o tsv)
+      # Write your PowerShell commands here.
+      
+      Write-Host "Hello World"
+      
+      $SERVICE_PRINCIPAL=$(az keyvault secret show --name service-principal-kv --vault-name terraform-aks-kv --query value -o tsv)
+      
+      $SERVICE_PRINCIPAL_SECRET=$(az keyvault secret show --name service-principal-secret-kv --vault-name terraform-aks-kv --query value -o tsv)
+      
+      $SUBSCRIPTION=$(az keyvault secret show --name free-subscription-kv --vault-name terraform-aks-kv --query value -o tsv)
+      
+      $TENTANT_ID=$(az keyvault secret show --name free-tentant-kv --vault-name terraform-aks-kv --query value -o tsv)
+      
+      $SSH_KEY=$(az keyvault secret show --name ssh-key-kv --vault-name terraform-aks-kv --query value -o tsv)
+      
+      
       echo $SUBSCRIPTION
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: TerraformCLI@0
   inputs:
