@@ -32,9 +32,9 @@ steps:
     command: 'init'
     allowTelemetryCollection: false
 
-- task: Bash@3
+- task: CmdLine@2
   inputs:
-    filePath: 'scripts\create-vars-from-kv-sec.sh'
+    script: 'dir'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: TerraformCLI@0
