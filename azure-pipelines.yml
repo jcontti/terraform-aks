@@ -41,6 +41,11 @@ steps:
       create-vars-from-kv-sec.sh
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
+- task: Bash@3
+  inputs:
+    filePath: 'scripts\create-vars-from-kv-sec.sh'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\'
+
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
