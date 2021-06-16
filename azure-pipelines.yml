@@ -46,6 +46,12 @@ steps:
     filePath: 'scripts\create-vars-from-kv-sec.sh'
     workingDirectory: '$(System.DefaultWorkingDirectory)\'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo $SUBSCRIPTION
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
