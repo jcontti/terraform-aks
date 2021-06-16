@@ -35,10 +35,6 @@ steps:
     allowTelemetryCollection: false
   displayName: 'Terraform INIT'
 
-- task: CmdLine@2
-  inputs:
-    script: 'echo $free-subscription-kv) > secret.txt'
-
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure-FreeTier-Jcontti'
@@ -56,6 +52,14 @@ steps:
             $SSH_KEY=$(az keyvault secret show --name ssh-key-kv --vault-name terraform-aks-kv --query value -o tsv)
         
             echo $SUBSCRIPTION
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo "subscription: $SUBSCRIPTION"
+      echo "service principal: $SERVICE_PRINCIPAL"
+      echo "tenat: $TENTANT_ID"
+
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
