@@ -60,6 +60,18 @@ steps:
       echo "service principal: $SERVICE_PRINCIPAL"
       echo "tenat: $TENTANT_ID"
 
+
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'Azure-FreeTier-Jcontti'
+    KeyVaultName: 'terraform-aks-kv'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(TENTANT_ID)'
+
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
