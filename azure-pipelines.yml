@@ -37,6 +37,7 @@ steps:
     script: |
       dir
       cd scripts
+      dir
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: TerraformCLI@0
