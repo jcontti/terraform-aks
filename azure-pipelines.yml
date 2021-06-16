@@ -35,13 +35,6 @@ steps:
     allowTelemetryCollection: false
   displayName: 'Terraform INIT'
 
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Azure-FreeTier-Jcontti'
-    KeyVaultName: 'terraform-aks-kv'
-    SecretsFilter: '*'
-    RunAsPreJob: true
-
 - task: CmdLine@2
   inputs:
     script: 'echo $free-subscription-kv) > secret.txt'
