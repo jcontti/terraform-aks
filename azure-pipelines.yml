@@ -34,7 +34,9 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'dir'
+    script: |
+      dir
+      cd scripts
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 - task: TerraformCLI@0
