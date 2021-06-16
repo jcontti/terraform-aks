@@ -70,7 +70,11 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'echo $(TENTANT_ID)'
+    script: 'echo $(free-tentant-kv)'
+
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(free-tentant-kv) > secret.txt'
 
 - task: TerraformCLI@0
   inputs:
