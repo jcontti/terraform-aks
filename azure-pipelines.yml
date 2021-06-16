@@ -22,6 +22,7 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'Azure-FreeTier-Jcontti'
-    scriptType: 'bash'
+    scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: 'az account list -o table'
+    
