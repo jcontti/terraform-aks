@@ -12,22 +12,6 @@ pool:
     - agent.name -equals LAPTOP-5LDNLO73
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'Azure-FreeTier-Jcontti'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az account list -o table'
-  displayName: 'Azure Subscription list'
-
 
 - task: TerraformCLI@0
   inputs:
@@ -41,14 +25,18 @@ steps:
     KeyVaultName: 'terraform-aks-kv'
     SecretsFilter: '*'
     RunAsPreJob: false
+  displayName: 'Retrieve secretS from Key Vault'
 
-- task: CmdLine@2
-  inputs:
-    script: |
-      echo $(service-principal-secret-kv) > sp-secret.txt
-      echo $(service-principal-kv) > sp.txt
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
     commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
     allowTelemetryCollection: false
+  displayName: 'Terraform PLAN'
+
+- task: TerraformCLI@0
+  inputs:
+    command: 'apply'
+    commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
+    allowTelemetryCollection: true
+  displayName: 'Terraform APPLY'
