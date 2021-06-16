@@ -52,14 +52,6 @@ steps:
             $SSH_KEY=$(az keyvault secret show --name ssh-key-kv --vault-name terraform-aks-kv --query value -o tsv)
         
             echo $SUBSCRIPTION
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      echo "subscription: $SUBSCRIPTION"
-      echo "service principal: $SERVICE_PRINCIPAL"
-      echo "tenat: $TENTANT_ID"
-
 
 - task: AzureKeyVault@2
   inputs:
@@ -70,14 +62,10 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'echo $(free-tentant-kv)'
-
-- task: CmdLine@2
-  inputs:
     script: 'echo $(free-tentant-kv) > secret.txt'
 
 - task: TerraformCLI@0
   inputs:
     command: 'plan'
-    commandOptions: '-var serviceprinciple_id=$SERVICE_PRINCIPAL -var serviceprinciple_key="$SERVICE_PRINCIPAL_SECRET" -var tenant_id=$TENTANT_ID -var subscription_id=$SUBSCRIPTION -var ssh_key="$SSH_KEY"'
+    commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
     allowTelemetryCollection: false
