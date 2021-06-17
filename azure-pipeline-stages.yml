@@ -68,36 +68,40 @@ stages :
     dependsOn: [plan]
     condition: succeeded('plan')
     jobs:
-      - job: terraform_apply
-        steps:
-              - checkout: self
-              - task: TerraformCLI@0
-                inputs:
-                  command: 'init'
-                  backendType: 'azurerm'
-                  backendServiceArm: 'Azure-FreeTier-Jcontti'
-                  backendAzureRmResourceGroupName: 'tstate-rg'
-                  backendAzureRmStorageAccountName: 'tstatefortest01'
-                  backendAzureRmContainerName: 'tstate'
-                  backendAzureRmKey: 'terraform.tfstate'
-                  allowTelemetryCollection: false
-                displayName: 'Terraform INIT'
-              - task: AzureKeyVault@2
-                inputs:
-                  azureSubscription: 'Azure-FreeTier-Jcontti'
-                  KeyVaultName: 'terraform-aks-kv'
-                  SecretsFilter: '*'
-                  RunAsPreJob: false
-                displayName: 'Retrieve secrets from Key Vault'
-              - task: TerraformCLI@0
-                inputs:
-                  command: 'plan'
-                  commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
-                  allowTelemetryCollection: false
-                displayName: 'Terraform PLAN'
-              - task: TerraformCLI@0
-                inputs:
-                  command: 'apply'
-                  commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
-                  allowTelemetryCollection: true
-                displayName: 'Terraform APPLY'
+    - deployment: terraform_apply
+    environment: 'infrastructure-test'
+    strategy:
+        runOnce:
+          deploy:
+            steps:
+                  - checkout: self
+                  - task: TerraformCLI@0
+                    inputs:
+                      command: 'init'
+                      backendType: 'azurerm'
+                      backendServiceArm: 'Azure-FreeTier-Jcontti'
+                      backendAzureRmResourceGroupName: 'tstate-rg'
+                      backendAzureRmStorageAccountName: 'tstatefortest01'
+                      backendAzureRmContainerName: 'tstate'
+                      backendAzureRmKey: 'terraform.tfstate'
+                      allowTelemetryCollection: false
+                    displayName: 'Terraform INIT'
+                  - task: AzureKeyVault@2
+                    inputs:
+                      azureSubscription: 'Azure-FreeTier-Jcontti'
+                      KeyVaultName: 'terraform-aks-kv'
+                      SecretsFilter: '*'
+                      RunAsPreJob: false
+                    displayName: 'Retrieve secrets from Key Vault'
+                  - task: TerraformCLI@0
+                    inputs:
+                      command: 'plan'
+                      commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
+                      allowTelemetryCollection: false
+                    displayName: 'Terraform PLAN'
+                  - task: TerraformCLI@0
+                    inputs:
+                      command: 'apply'
+                      commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
+                      allowTelemetryCollection: true
+                    displayName: 'Terraform APPLY'
