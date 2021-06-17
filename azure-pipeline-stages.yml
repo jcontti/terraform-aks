@@ -62,6 +62,7 @@ stages :
                   command: 'plan'
                   commandOptions: '-var serviceprinciple_id=$(service-principal-kv) -var serviceprinciple_key="$(service-principal-secret-kv)" -var tenant_id=$(free-tentant-kv) -var subscription_id=$(free-subscription-kv) -var ssh_key="$(ssh-key-kv)"'
                   allowTelemetryCollection: false
+                  publishPlanResults: 'my_plan_name'
                 displayName: 'Terraform PLAN'
  
   - stage: apply
