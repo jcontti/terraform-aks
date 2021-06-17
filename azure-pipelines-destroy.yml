@@ -26,7 +26,7 @@ steps:
     KeyVaultName: 'terraform-aks-kv'
     SecretsFilter: '*'
     RunAsPreJob: false
-  displayName: 'Retrieve secretS from Key Vault'
+  displayName: 'Retrieve secrets from Key Vault'
 
 - task: TerraformCLI@0
   inputs:
