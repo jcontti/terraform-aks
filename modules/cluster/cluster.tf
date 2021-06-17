@@ -61,4 +61,19 @@ resource "azurerm_kubernetes_cluster" "aks-getting-started" {
     }
   }
 
+  tags = {
+    environment    = "development"
+    creationSource = "terraform"
+    department     = "devops"
+  }
+
+}
+
+resource "azurerm_container_registry" "acr-test" {
+  name                     = "acr-test"
+  resource_group_name      = azurerm_resource_group.aks-getting-started.name
+  location                 = azurerm_resource_group.aks-getting-started.location
+  sku                      = "Basic"
+  admin_enabled            = false
+  depends_on               = [azurerm_resource_group.aks-getting-started] 
 }
