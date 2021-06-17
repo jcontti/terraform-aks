@@ -12,15 +12,12 @@ steps:
 - task: TerraformCLI@0
   inputs:
     command: 'init'
-    commandOptions: '-backend-config="backend.tfvars"'
     backendType: 'azurerm'
     backendServiceArm: 'Azure-FreeTier-Jcontti'
-    allowTelemetryCollection: false
-  displayName: 'Terraform INIT new'
-- task: TerraformCLI@0
-  inputs:
-    command: 'init'
-    commandOptions: '-backend-config="backend.tfvars"'
+    backendAzureRmResourceGroupName: 'tstate-rg'
+    backendAzureRmStorageAccountName: 'tstatefortest01'
+    backendAzureRmContainerName: 'tstate'
+    backendAzureRmKey: 'terraform.tfstate'
     allowTelemetryCollection: false
   displayName: 'Terraform INIT'
 
