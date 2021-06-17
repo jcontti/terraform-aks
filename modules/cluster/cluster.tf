@@ -69,8 +69,8 @@ resource "azurerm_kubernetes_cluster" "aks-getting-started" {
 
 }
 
-resource "azurerm_container_registry" "acr" {
-  name                     = "acr-test-name"
+resource "azurerm_container_registry" "acr-test" {
+  name                     = "AzureContainerRegistrytest01"
   resource_group_name      = azurerm_resource_group.aks-getting-started.name
   location                 = azurerm_resource_group.aks-getting-started.location
   sku                      = "Basic"
