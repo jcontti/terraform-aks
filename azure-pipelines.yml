@@ -25,7 +25,7 @@ steps:
     azureSubscription: 'Azure-FreeTier-Jcontti'
     KeyVaultName: 'terraform-aks-kv'
     SecretsFilter: '*'
-    RunAsPreJob: false
+    RunAsPreJob: true
   displayName: 'Retrieve secrets from Key Vault'
 
 - task: TerraformCLI@0
