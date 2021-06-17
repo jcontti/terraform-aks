@@ -13,6 +13,7 @@ steps:
 - task: TerraformCLI@0
   inputs:
     command: 'init'
+    commandOptions: '-backend-config="backend.tfvars"'
     allowTelemetryCollection: false
   displayName: 'Terraform INIT'
 
