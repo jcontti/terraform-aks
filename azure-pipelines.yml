@@ -1,7 +1,7 @@
 # Azure Kubernetes Services creation with Terraform
 
-trigger:
-- main
+#trigger:
+#- main
 
 pool: 
    name: default
