@@ -9,7 +9,14 @@ pool:
     - agent.name -equals LAPTOP-5LDNLO73
 
 steps:
-
+- task: TerraformCLI@0
+  inputs:
+    command: 'init'
+    commandOptions: '-backend-config="backend.tfvars"'
+    backendType: 'azurerm'
+    backendServiceArm: 'Azure-FreeTier-Jcontti'
+    allowTelemetryCollection: false
+  displayName: 'Terraform INIT new'
 - task: TerraformCLI@0
   inputs:
     command: 'init'
