@@ -9,10 +9,15 @@ pool:
     - agent.name -equals LAPTOP-5LDNLO73
 
 steps:
-
 - task: TerraformCLI@0
   inputs:
     command: 'init'
+    backendType: 'azurerm'
+    backendServiceArm: 'Azure-FreeTier-Jcontti'
+    backendAzureRmResourceGroupName: 'tstate-rg'
+    backendAzureRmStorageAccountName: 'tstatefortest01'
+    backendAzureRmContainerName: 'tstate'
+    backendAzureRmKey: 'terraform.tfstate'
     allowTelemetryCollection: false
   displayName: 'Terraform INIT'
 
