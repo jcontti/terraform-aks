@@ -26,13 +26,6 @@ stages :
           backendAzureRmKey: 'terraform.tfstate'
           allowTelemetryCollection: false
         displayName: 'Terraform INIT'
-      - task: AzureKeyVault@2
-        inputs:
-          azureSubscription: 'Azure-FreeTier-Jcontti'
-          KeyVaultName: 'terraform-aks-kv'
-          SecretsFilter: '*'
-          RunAsPreJob: true
-        displayName: 'Retrieve secrets from Key Vault'
       - task: TerraformTaskV1@0
         displayName: 'validate'
         inputs:
@@ -43,7 +36,7 @@ stages :
     dependsOn: [validate]
     condition: succeeded('validate')
     jobs:
-      - job: terraform_plan_develop
+      - job: terraform_plan
         steps:
               - checkout: self
               - task: TerraformCLI@0
@@ -62,7 +55,7 @@ stages :
                   azureSubscription: 'Azure-FreeTier-Jcontti'
                   KeyVaultName: 'terraform-aks-kv'
                   SecretsFilter: '*'
-                  RunAsPreJob: true
+                  RunAsPreJob: false
                 displayName: 'Retrieve secrets from Key Vault'
               - task: TerraformCLI@0
                 inputs:
@@ -75,7 +68,7 @@ stages :
     dependsOn: [plan]
     condition: succeeded('plan')
     jobs:
-      - job: terraform_apply_develop
+      - job: terraform_apply
         steps:
               - checkout: self
               - task: TerraformCLI@0
@@ -89,6 +82,13 @@ stages :
                   backendAzureRmKey: 'terraform.tfstate'
                   allowTelemetryCollection: false
                 displayName: 'Terraform INIT'
+              - task: AzureKeyVault@2
+                inputs:
+                  azureSubscription: 'Azure-FreeTier-Jcontti'
+                  KeyVaultName: 'terraform-aks-kv'
+                  SecretsFilter: '*'
+                  RunAsPreJob: false
+                displayName: 'Retrieve secrets from Key Vault'
               - task: TerraformCLI@0
                 inputs:
                   command: 'plan'
